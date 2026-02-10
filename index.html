@@ -290,6 +290,20 @@ button:disabled {
   position: fixed;
   pointer-events: none;
   z-index: 1;
+  will-change: transform;
+  font-size: 2em;
+}
+
+.heart.small {
+  font-size: 0.8em;
+}
+
+.heart.medium {
+  font-size: 1.8em;
+}
+
+.heart.big {
+  font-size: 3em;
 }
 
 @keyframes heartFloat {
@@ -298,16 +312,16 @@ button:disabled {
     opacity: 1;
   }
   25% {
-    transform: translateY(-25vh) translateX(30px) scale(1.05);
+    transform: translateY(25vh) translateX(30px) scale(1.05);
   }
   50% {
-    transform: translateY(-50vh) translateX(-25px) scale(0.95);
+    transform: translateY(50vh) translateX(-25px) scale(0.95);
   }
   75% {
-    transform: translateY(-75vh) translateX(20px) scale(1.02);
+    transform: translateY(75vh) translateX(20px) scale(1.02);
   }
   100% {
-    transform: translateY(-130vh) translateX(0) scale(0.8);
+    transform: translateY(130vh) translateX(0) scale(0.8);
     opacity: 0;
   }
 }
@@ -318,16 +332,16 @@ button:disabled {
     opacity: 1;
   }
   25% {
-    transform: translateY(-25vh) translateX(-35px) rotate(90deg) scale(1.08);
+    transform: translateY(25vh) translateX(-35px) rotate(90deg) scale(1.08);
   }
   50% {
-    transform: translateY(-50vh) translateX(28px) rotate(180deg) scale(0.92);
+    transform: translateY(50vh) translateX(28px) rotate(180deg) scale(0.92);
   }
   75% {
-    transform: translateY(-75vh) translateX(-20px) rotate(270deg) scale(1.03);
+    transform: translateY(75vh) translateX(-20px) rotate(270deg) scale(1.03);
   }
   100% {
-    transform: translateY(-130vh) translateX(0) rotate(360deg) scale(0.7);
+    transform: translateY(130vh) translateX(0) rotate(360deg) scale(0.7);
     opacity: 0;
   }
 }
@@ -338,16 +352,16 @@ button:disabled {
     opacity: 1;
   }
   25% {
-    transform: translateY(-25vh) translateX(25px) rotate(-80deg) scale(1.06);
+    transform: translateY(25vh) translateX(25px) rotate(-80deg) scale(1.06);
   }
   50% {
-    transform: translateY(-50vh) translateX(-30px) rotate(100deg) scale(0.94);
+    transform: translateY(50vh) translateX(-30px) rotate(100deg) scale(0.94);
   }
   75% {
-    transform: translateY(-75vh) translateX(15px) rotate(250deg) scale(1.04);
+    transform: translateY(75vh) translateX(15px) rotate(250deg) scale(1.04);
   }
   100% {
-    transform: translateY(-130vh) translateX(0) rotate(360deg) scale(0.75);
+    transform: translateY(130vh) translateX(0) rotate(360deg) scale(0.75);
     opacity: 0;
   }
 }
@@ -362,15 +376,15 @@ button:disabled {
 }
 
 .heart-float {
-  animation: heartFloat 5s ease-in forwards;
+  animation: heartFloat 6s linear forwards !important;
 }
 
-.heart-float:nth-child(odd) {
-  animation: heartFloat2 5.5s ease-in forwards;
+.heart-float.type2 {
+  animation: heartFloat2 6.5s linear forwards !important;
 }
 
-.heart-float:nth-child(3n) {
-  animation: heartFloat3 5.2s ease-in forwards;
+.heart-float.type3 {
+  animation: heartFloat3 6.2s linear forwards !important;
 }
 
 .heart-bounce {
@@ -446,11 +460,11 @@ button:disabled {
 
 <body>
 
-<audio id="stageBgm" loop>
-  <source src="Ennangalil Enneramum - Eppadi Vandhaayo _ Aaromaley _ Tamil.mp3" type="audio/mpeg">
+<audio id="stageBgm" loop preload="auto">
+  <source src="Missing Jessie At Goa BGM.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="bgMusic">
+<audio id="bgMusic" preload="auto">
   <source src="Ennangalil Enneramum - Eppadi Vandhaayo _ Aaromaley _ Tamil.mp3" type="audio/mpeg">
 </audio>
 
@@ -487,13 +501,13 @@ button:disabled {
 <!-- STAGE 3: Music & Pictures -->
 <div id="stage3" class="stage">
   <div class="container">
-    <h1>I Love You 💕</h1>
+    <h1>I Love You Prathiksha 💕</h1>
     
     <div class="stage3-pictures" id="stage3Pictures">
       <!-- Pictures will be added here by JavaScript -->
     </div>
     
-    <p id="stage3Text" class="subtitle" style="margin-top: 30px; font-size: 1.1em;">Music Playing... ♥️</p>
+    <p id="stage3Text" class="subtitle" style="margin-top: 30px; font-size: 1.1em;">Our Music for you... ♥️</p>
   </div>
 </div>
 
@@ -521,8 +535,24 @@ let stage4PicturesCreated = false;
 // Initialize: Start music in stage 1 with loop
 window.addEventListener('load', () => {
   let music = document.getElementById("stageBgm");
-  music.loop = true;
-  music.play().catch(e => console.log("Audio autoplay blocked"));
+  music.volume = 0.9;
+  
+  // Try to play immediately
+  let playPromise = music.play();
+  
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log("Autoplay blocked, waiting for user interaction");
+      // If autoplay is blocked, play on first user interaction
+      document.addEventListener('click', () => {
+        music.play().catch(e => console.log("Play failed:", e));
+      }, { once: true });
+      document.addEventListener('touchstart', () => {
+        music.play().catch(e => console.log("Play failed:", e));
+      }, { once: true });
+    });
+  }
+  
   musicPlaying = true;
   
   // Start heart shower for Stage 1 (continuous)
@@ -534,6 +564,9 @@ function goToStage2() {
   let stageBgm = document.getElementById("stageBgm");
   stageBgm.pause();
   stageBgm.currentTime = 0;
+  
+  // Make sure loop is off when transitioning
+  stageBgm.loop = false;
   
   currentStage = 2;
   updateStage();
@@ -548,8 +581,15 @@ function goToStage3() {
   
   // Play music for 35 seconds
   let music = document.getElementById("bgMusic");
+  music.volume = 0.8;
   music.currentTime = 0;
-  music.play();
+  
+  let playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log("bgMusic play error:", error);
+    });
+  }
   
   // Create heart shower for 15 seconds
   startHeartShower(15000);
@@ -564,9 +604,22 @@ function goToStage4() {
   currentStage = 4;
   updateStage();
   
-  // Stop music
+  // Stop stage 3 music
   let music = document.getElementById("bgMusic");
   music.pause();
+  
+  // Play stage 1 music again
+  let stageBgm = document.getElementById("stageBgm");
+  stageBgm.loop = true;
+  stageBgm.currentTime = 0;
+  stageBgm.volume = 0.7;
+  
+  let playPromise = stageBgm.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log("stageBgm play error:", error);
+    });
+  }
   
   // Create floating pictures around card
   if (!stage4PicturesCreated) {
@@ -685,19 +738,25 @@ function startHeartShower(duration) {
       return;
     }
     
-    createHeart();
+    // Create multiple hearts at once for shower effect
+    for (let i = 0; i < 2; i++) {
+      setTimeout(() => createHeart(), i * 50);
+    }
   }, 100);
 }
 
 function startStage1HeartShower() {
   // Create hearts continuously while on Stage 1
-  let interval = setInterval(() => {
+  let heartInterval = setInterval(() => {
     if (currentStage !== 1) {
-      clearInterval(interval);
+      clearInterval(heartInterval);
       return;
     }
     
-    createHeart();
+    // Create multiple hearts at once for shower effect
+    for (let i = 0; i < 2; i++) {
+      setTimeout(() => createHeart(), i * 50);
+    }
   }, 150);
 }
 
@@ -706,46 +765,48 @@ function createHeart(size = 'random') {
   h.innerHTML = "❤️";
   h.classList.add("heart", "heart-float");
   
-  // Random horizontal position across full screen width
-  h.style.left = Math.random() * window.innerWidth + "px";
-  
-  // Start from bottom of viewport
-  h.style.top = window.innerHeight + "px";
-  
-  h.style.position = "fixed";
-  h.style.filter = "drop-shadow(0 2px 4px rgba(198, 74, 136, 0.3))";
-  
-  // Determine size
-  let fontSize;
+  // Determine size and animation type
   if (size === 'random') {
     let sizes = ['small', 'medium', 'big'];
     size = sizes[Math.floor(Math.random() * sizes.length)];
   }
+  h.classList.add(size);
   
-  switch(size) {
-    case 'small':
-      fontSize = '0.8em';
-      break;
-    case 'medium':
-      fontSize = '1.8em';
-      break;
-    case 'big':
-      fontSize = '3em';
-      break;
-    default:
-      fontSize = '2em';
+  // Randomly assign animation type
+  let animType = Math.random();
+  if (animType > 0.66) {
+    h.classList.add('type2');
+  } else if (animType > 0.33) {
+    h.classList.add('type3');
   }
   
-  h.style.fontSize = fontSize;
+  // Random horizontal position across full screen width
+  let randomLeft = Math.random() * window.innerWidth;
+  h.style.left = randomLeft + "px";
+  h.style.top = "-50px";
+  
+  h.style.filter = "drop-shadow(0 2px 4px rgba(198, 74, 136, 0.3))";
+  
   document.body.appendChild(h);
   
-  // Remove after animation completes
-  let randomDuration = 5000 + Math.random() * 500;
-  setTimeout(() => {
-    if (h.parentNode) {
+  // Force reflow to ensure animation starts
+  h.offsetHeight;
+  
+  // Remove after animation completes (6-6.5 seconds)
+  let duration = 6000 + Math.random() * 500;
+  
+  h.addEventListener('animationend', () => {
+    if (h && h.parentNode) {
       h.remove();
     }
-  }, randomDuration);
+  }, { once: true });
+  
+  // Fallback timeout in case animation doesn't trigger
+  setTimeout(() => {
+    if (h && h.parentNode) {
+      h.remove();
+    }
+  }, duration);
 }
 
 function createConfetti() {
