@@ -49,8 +49,8 @@ button{
 
 <body>
 
-<audio autoplay loop>
-<source src="Ennangalil Enneramum - Eppadi Vandhaayo _ Aaromaley _ Tamil.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+  <source src="Ennangalil Enneramum - Eppadi Vandhaayo _ Aaromaley _ Tamil.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
@@ -71,10 +71,15 @@ button{
 <script>
 
 function love(){
- document.getElementById("msg").innerHTML =
- "I Love You So Much Prathiksha ❤️ — Yours, Maddy";
+  document.getElementById("msg").innerHTML =
+  "I Love You So Much Prathiksha ❤️ — Only Yours, Maddy";
 
- for(let i=0;i<30;i++){heart();}
+  let music = document.getElementById("bgMusic");
+  music.play();
+
+  for(let i=0;i<30;i++){
+    heart();
+  }
 }
 
 function run(){
