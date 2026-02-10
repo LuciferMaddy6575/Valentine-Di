@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Happy Valentine's Day ❤️</title>
+
+<style>
+body{
+ text-align:center;
+ font-family:Arial;
+ background:linear-gradient(to right,#ff758c,#ff7eb3);
+ color:white;
+ overflow:hidden;
+}
+
+.container{
+ margin-top:80px;
+}
+
+button{
+ padding:15px 25px;
+ margin:15px;
+ font-size:18px;
+ border-radius:10px;
+ border:none;
+ cursor:pointer;
+}
+
+#yes{
+ background:#00e676;
+}
+
+#no{
+ background:#ff1744;
+ position:absolute;
+}
+
+.heart{
+ position:fixed;
+ font-size:24px;
+ animation:float 4s linear infinite;
+}
+
+@keyframes float{
+ 0%{transform:translateY(0)}
+ 100%{transform:translateY(-100vh)}
+}
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+<h1>Hi Prathiksha❤️</h1>
+
+<h2>Kutty, You are the First and last thing on my mind each and every day.</h2>
+
+<h2>Will you continue being my forever Valentine? 😍</h2>
+
+<button id="yes" onclick="love()">Yes Of Course ❤️</button>
+<button id="no" onmouseover="run()">No 😜</button>
+
+<h2 id="msg"></h2>
+
+</div>
+
+<script>
+
+function love(){
+ document.getElementById("msg").innerHTML =
+ "I Love You So Much Prathiksha ❤️ — Yours, Maddy";
+
+ for(let i=0;i<30;i++){heart();}
+}
+
+function run(){
+ let b=document.getElementById("no");
+ b.style.top=Math.random()*400+"px";
+ b.style.left=Math.random()*400+"px";
+}
+
+function heart(){
+ let h=document.createElement("div");
+ h.innerHTML="❤️";
+ h.classList.add("heart");
+ h.style.left=Math.random()*100+"vw";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),4000);
+}
+
+</script>
+
+</body>
+</html>
