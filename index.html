@@ -139,11 +139,60 @@ button {
 
 @keyframes heartFloat {
   0% {
-    transform: translateY(0);
+    transform: translateY(0) translateX(0) scale(1);
     opacity: 1;
   }
+  25% {
+    transform: translateY(-25vh) translateX(30px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-50vh) translateX(-25px) scale(0.95);
+  }
+  75% {
+    transform: translateY(-75vh) translateX(20px) scale(1.02);
+  }
   100% {
-    transform: translateY(-100vh) rotate(360deg);
+    transform: translateY(-100vh) translateX(0) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes heartFloat2 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(-25vh) translateX(-35px) rotate(90deg) scale(1.08);
+  }
+  50% {
+    transform: translateY(-50vh) translateX(28px) rotate(180deg) scale(0.92);
+  }
+  75% {
+    transform: translateY(-75vh) translateX(-20px) rotate(270deg) scale(1.03);
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0) rotate(360deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes heartFloat3 {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(-25vh) translateX(25px) rotate(-80deg) scale(1.06);
+  }
+  50% {
+    transform: translateY(-50vh) translateX(-30px) rotate(100deg) scale(0.94);
+  }
+  75% {
+    transform: translateY(-75vh) translateX(15px) rotate(250deg) scale(1.04);
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0) rotate(360deg) scale(0.75);
     opacity: 0;
   }
 }
@@ -158,7 +207,15 @@ button {
 }
 
 .heart-float {
-  animation: heartFloat 4s ease-in forwards;
+  animation: heartFloat 5s ease-in forwards;
+}
+
+.heart-float:nth-child(odd) {
+  animation: heartFloat2 5.5s ease-in forwards;
+}
+
+.heart-float:nth-child(3n) {
+  animation: heartFloat3 5.2s ease-in forwards;
 }
 
 .heart-bounce {
@@ -198,7 +255,7 @@ button {
 
 <body>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic">
   <source src="Ennangalil Enneramum - Eppadi Vandhaayo _ Aaromaley _ Tamil.mp3" type="audio/mpeg">
 </audio>
 
@@ -223,10 +280,16 @@ button {
 
 function love() {
   document.getElementById("msg").innerHTML =
-  "I Love You So Much Prathiksha ❤️<br>— Only Yours, Maddy 💑";
+  "I Love You So Much Prathiksha ❤️<br> Only Yours, Maddy 💑";
 
   let music = document.getElementById("bgMusic");
   music.play().catch(e => console.log("Audio autoplay blocked"));
+
+  // Stop music after 15 seconds
+  setTimeout(() => {
+    music.pause();
+    music.currentTime = 0;
+  }, 35000);
 
   // Create floating hearts
   for(let i = 0; i < 35; i++) {
@@ -245,11 +308,36 @@ function love() {
 
 function run() {
   let b = document.getElementById("no");
-  let x = Math.random() * (window.innerWidth - 120);
-  let y = Math.random() * (window.innerHeight - 50);
+  let container = document.querySelector(".container");
+  
+  // Get container's position and dimensions
+  let rect = container.getBoundingClientRect();
+  let containerX = rect.left;
+  let containerY = rect.top;
+  let containerWidth = rect.width;
+  let containerHeight = rect.height;
+  
+  let buttonWidth = b.offsetWidth;
+  let buttonHeight = b.offsetHeight;
+  
+  // Calculate safe boundaries within the container with 15px margin
+  let minX = containerX + 15;
+  let minY = containerY + 15;
+  let maxX = containerX + containerWidth - buttonWidth - 15;
+  let maxY = containerY + containerHeight - buttonHeight - 15;
+  
+  // Ensure bounds are valid
+  minX = Math.min(minX, maxX - 20);
+  minY = Math.min(minY, maxY - 20);
+  
+  // Generate random position within container bounds
+  let x = minX + Math.random() * (maxX - minX);
+  let y = minY + Math.random() * (maxY - minY);
+  
+  // Set position as fixed relative to viewport
   b.style.position = "fixed";
-  b.style.top = y + "px";
-  b.style.left = x + "px";
+  b.style.top = Math.floor(y) + "px";
+  b.style.left = Math.floor(x) + "px";
   
   // Add playful bounce effect
   b.style.animation = "none";
@@ -264,8 +352,12 @@ function createHeart() {
   h.classList.add("heart", "heart-float");
   h.style.left = Math.random() * 100 + "vw";
   h.style.top = "100vh";
+  h.style.filter = "drop-shadow(0 2px 4px rgba(198, 74, 136, 0.3))";
   document.body.appendChild(h);
-  setTimeout(() => h.remove(), 4000);
+  
+  // Remove after animation completes (5-5.5 seconds)
+  let randomDuration = 5000 + Math.random() * 500;
+  setTimeout(() => h.remove(), randomDuration);
 }
 
 function createConfetti() {
