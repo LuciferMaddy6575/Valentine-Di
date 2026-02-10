@@ -1,49 +1,198 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Happy Valentine's Day ❤️</title>
 
 <style>
-body{
- text-align:center;
- font-family:Arial;
- background:linear-gradient(to right,#ff758c,#ff7eb3);
- color:white;
- overflow:hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container{
- margin-top:80px;
+body {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #FFB6D9 0%, #E6D7FF 50%, #FFD4B4 100%);
+  color: #8B4A70;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-button{
- padding:15px 25px;
- margin:15px;
- font-size:18px;
- border-radius:10px;
- border:none;
- cursor:pointer;
+.container {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  padding: 60px 50px;
+  box-shadow: 0 8px 32px rgba(139, 74, 112, 0.2);
+  max-width: 700px;
+  width: 90%;
+  animation: slideUp 0.8s ease-out;
 }
 
-#yes{
- background:#00e676;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#no{
- background:#ff1744;
- position:absolute;
+h1 {
+  font-size: 2.8em;
+  color: #C64A88;
+  margin-bottom: 20px;
+  animation: fadeInScale 1s ease-out 0.2s both;
+  letter-spacing: 1px;
 }
 
-.heart{
- position:fixed;
- font-size:24px;
- animation:float 4s linear infinite;
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-@keyframes float{
- 0%{transform:translateY(0)}
- 100%{transform:translateY(-100vh)}
+.subtitle {
+  font-size: 1.2em;
+  color: #9B5B8A;
+  margin: 15px 0;
+  line-height: 1.6;
+  animation: fadeInSlide 1s ease-out 0.4s both;
 }
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.button-group {
+  margin-top: 45px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 18px 40px;
+  font-size: 1.1em;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+}
+
+#yes {
+  background: linear-gradient(135deg, #FFB6D9 0%, #FF99C8 100%);
+  color: white;
+  animation: fadeInSlide 1s ease-out 0.6s both;
+}
+
+#yes:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 153, 200, 0.5);
+}
+
+#yes:active {
+  transform: translateY(-1px);
+}
+
+#no {
+  background: linear-gradient(135deg, #E6D7FF 0%, #DCC9E8 100%);
+  color: #8B4A70;
+  position: relative;
+  animation: fadeInSlide 1s ease-out 0.6s both;
+}
+
+#no:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(230, 215, 255, 0.7);
+}
+
+.heart {
+  position: fixed;
+  font-size: 2em;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes heartFloat {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heartBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.heart-float {
+  animation: heartFloat 4s ease-in forwards;
+}
+
+.heart-bounce {
+  animation: heartBounce 0.6s ease-in-out;
+}
+
+#msg {
+  font-size: 1.5em;
+  color: #C64A88;
+  margin-top: 30px;
+  min-height: 60px;
+  animation: fadeInScale 0.8s ease-out;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.confetti {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  font-size: 1.5em;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotateZ(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-fall {
+  animation: confettiFall 3s ease-in forwards;
+}
+
 </style>
 </head>
 
@@ -54,47 +203,81 @@ button{
 </audio>
 
 <div class="container">
-
-<h1>Hi Prathiksha❤️</h1>
-
-<h2>Kutty, You are the First and last thing on my mind each and every day.</h2>
-
-<h2>Will you continue being my forever Valentine? 😍</h2>
-
-<button id="yes" onclick="love()">Yes Of Course ❤️</button>
-<button id="no" onmouseover="run()">No 😜</button>
-
-<h2 id="msg"></h2>
-
+  <h1>Hi Prathiksha ❤️</h1>
+  
+  <p class="subtitle">Kutty, you are the first and last thing on my mind each and every day.</p>
+  
+  <p class="subtitle" style="font-size: 1.3em; color: #C64A88; font-weight: 600;">
+    Will you continue being my forever Valentine? 😍
+  </p>
+  
+  <div class="button-group">
+    <button id="yes" onclick="love()">Yes Of Course 💕</button>
+    <button id="no" onmouseover="run()">No 😜</button>
+  </div>
+  
+  <h2 id="msg"></h2>
 </div>
 
 <script>
 
-function love(){
+function love() {
   document.getElementById("msg").innerHTML =
-  "I Love You So Much Prathiksha ❤️ — Only Yours, Maddy";
+  "I Love You So Much Prathiksha ❤️<br>— Only Yours, Maddy 💑";
 
   let music = document.getElementById("bgMusic");
-  music.play();
+  music.play().catch(e => console.log("Audio autoplay blocked"));
 
-  for(let i=0;i<30;i++){
-    heart();
+  // Create floating hearts
+  for(let i = 0; i < 35; i++) {
+    setTimeout(() => createHeart(), i * 80);
   }
+
+  // Create confetti bursts
+  for(let i = 0; i < 50; i++) {
+    createConfetti();
+  }
+
+  // Disable buttons after yes
+  document.getElementById("yes").disabled = true;
+  document.getElementById("no").disabled = true;
 }
 
-function run(){
- let b=document.getElementById("no");
- b.style.top=Math.random()*400+"px";
- b.style.left=Math.random()*400+"px";
+function run() {
+  let b = document.getElementById("no");
+  let x = Math.random() * (window.innerWidth - 120);
+  let y = Math.random() * (window.innerHeight - 50);
+  b.style.position = "fixed";
+  b.style.top = y + "px";
+  b.style.left = x + "px";
+  
+  // Add playful bounce effect
+  b.style.animation = "none";
+  setTimeout(() => {
+    b.style.animation = "heartBounce 0.3s ease-in-out";
+  }, 10);
 }
 
-function heart(){
- let h=document.createElement("div");
- h.innerHTML="❤️";
- h.classList.add("heart");
- h.style.left=Math.random()*100+"vw";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),4000);
+function createHeart() {
+  let h = document.createElement("div");
+  h.innerHTML = "❤️";
+  h.classList.add("heart", "heart-float");
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.top = "100vh";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 4000);
+}
+
+function createConfetti() {
+  let symbols = ["💕", "💖", "💗", "💝", "✨", "🌹"];
+  let c = document.createElement("div");
+  c.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+  c.classList.add("confetti", "confetti-fall");
+  c.style.left = Math.random() * 100 + "vw";
+  c.style.top = "-20px";
+  c.style.opacity = "1";
+  document.body.appendChild(c);
+  setTimeout(() => c.remove(), 3000);
 }
 
 </script>
